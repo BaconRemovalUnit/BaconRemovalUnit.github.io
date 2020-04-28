@@ -1,5 +1,5 @@
 
-let camera, scene, renderer;
+let camera, scene, renderer,controls;
 let camera_x,camera_y,camera_z;
 let bounding_box;
 
@@ -110,8 +110,10 @@ function init() {
     renderer = new THREE.WebGLRenderer( {antialias:true , alpha: true} );
     renderer.setClearColor( 0x2f2f2f, 1);
     renderer.setSize( window.innerWidth, window.innerHeight );
-    
-    let controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+    controls.target.set( MAX_X/2, MAX_Y/2, MAX_Z/2 );
     let gui = new dat.GUI();
     gui.add(gui_settings, 'MAX_V', 0,20);
     gui.add(gui_settings,'MAX_X',50,2000);
@@ -155,6 +157,7 @@ function animate() {
 
     if(changed_div){
         scene.remove(bounding_box);
+        controls.target.set( MAX_X/2, MAX_Y/2, MAX_Z/2 );
         setBoundingBox();
     }
     bounding_box.visible= gui_settings.ShowBorder;
